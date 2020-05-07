@@ -1,8 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import rospy
-from robot_speech.srv import String
+from robot_speech.srv import Speak
 import pyttsx3
+
 
 def handle_speak(request):
     text = request.data
@@ -17,15 +18,16 @@ def handle_speak(request):
         engine.setProperty('voice', use_voice.id)
         engine.say(text)
         engine.runAndWait()
-        return 'Voice spoke'
-
-    return 'Request empty'
+        return True
+        
+    return False
 
 def run_server():
     rospy.init_node('robot_speak_server')
-    s = rospy.Service('robot_speak', String, handle_speak)
+    service = rospy.Service('robot_speak', Speak, handle_speak)
     print('Ready to speak')
     rospy.spin()
+    
 
 if __name__ == '__main__':
     run_server()

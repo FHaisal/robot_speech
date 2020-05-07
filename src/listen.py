@@ -1,37 +1,31 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import rospy
-from std_msgs.msg import String
+from robot_speech.srv import String, Listen
 from speech_recognition import Recognizer, Microphone, UnknownValueError, RequestError
 
-def listen_publisher():
-    pub = rospy.Publisher('robot_listen', String, queue_size=10)
-    rospy.init_node('robot_listen_publisher')
-    rate = rospy.Rate(10)
-    while not rospy.is_shutdown():
-        speech = robot_listen()
 
-        if speech['_text']:
-            pub.publish(str(speech))
-            rate.sleep()
-
-def robot_listen():
+def robot_listen(request):
     try:
         recogniser = Recognizer()
         microphone = Microphone()
 
+        print('Listening')
+
         with microphone as source:
             audio = recogniser.listen(source)
 
-        return recogniser.recognize_wit(audio, key="", show_all=True)
+        return str(recogniser.recognize_wit(audio, key='2F35S7KRNBLUIIFEVKC2PLFQ2XPGA45L', show_all=True))
     except (UnknownValueError, RequestError) as e:
         print(e)
         print('\n')
-        return {'_text': '', 'entities': {}}
-    
+        return str({'_text': '', 'entities': {}})
+
+def run_server():
+    rospy.init_node('robot_listen_server')
+    service = rospy.Service('robot_listen', Listen, robot_listen)
+    rospy.spin()
+
+
 if __name__ == '__main__':
-    try:
-        listen_publisher()
-        print('Running')
-    except rospy.ROSInterruptException:
-        pass
+    run_server()
