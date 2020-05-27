@@ -13,6 +13,7 @@ def robot_listen(request):
         print('Listening')
 
         with microphone as source:
+            # recogniser.adjust_for_ambient_noise(source)
             audio = recogniser.listen(source)
 
         return str(recogniser.recognize_wit(audio, key='2F35S7KRNBLUIIFEVKC2PLFQ2XPGA45L', show_all=True))
