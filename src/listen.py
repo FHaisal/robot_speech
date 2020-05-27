@@ -6,6 +6,7 @@ from speech_recognition import Recognizer, Microphone, UnknownValueError, Reques
 
 
 def robot_listen(request):
+    wit_key = '2F35S7KRNBLUIIFEVKC2PLFQ2XPGA45L'
     try:
         recogniser = Recognizer()
         microphone = Microphone()
@@ -16,7 +17,7 @@ def robot_listen(request):
             # recogniser.adjust_for_ambient_noise(source)
             audio = recogniser.listen(source)
 
-        return str(recogniser.recognize_wit(audio, key='2F35S7KRNBLUIIFEVKC2PLFQ2XPGA45L', show_all=True))
+        return str(recogniser.recognize_wit(audio, key=wit_key, show_all=True))
     except (UnknownValueError, RequestError) as e:
         print(e)
         print('\n')
