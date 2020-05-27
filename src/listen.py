@@ -6,7 +6,7 @@ from speech_recognition import Recognizer, Microphone, UnknownValueError, Reques
 
 
 def robot_listen(request):
-    wit_key = '2F35S7KRNBLUIIFEVKC2PLFQ2XPGA45L'
+    wit_key = ''
     try:
         recogniser = Recognizer()
         microphone = Microphone()
